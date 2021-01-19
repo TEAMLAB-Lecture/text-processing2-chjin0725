@@ -28,7 +28,28 @@ def digits_to_words(input_string):
             >>> tp2.digits_to_words(digits_str2)
             'three one four one five'
     """
-    digit_string = None
+    numbers  = {'1' : 'one' ,
+                '2' : 'two',
+                '3' : 'three',
+                '4' : 'four',
+                '5' : 'five',
+                '6' : 'six',
+                '7' : 'seven',
+                '8' : 'eight',
+                '9' : 'nine',
+                '0' : 'zero'}
+    
+
+    temp_chars = []
+    for c in input_string:
+        if c in numbers:
+            if temp_chars:
+                temp_chars.append(' ')
+                temp_chars.append(numbers[c])
+            else:
+                temp_chars.append(numbers[c])
+
+    digit_string = ''.join(temp_chars)
     return digit_string
 
 
@@ -38,6 +59,56 @@ def digits_to_words(input_string):
 두번째로는, 변수 이름을 대소문자 구별해 구분자 (delimiter)없이 쓰는 경우가 있습니다. 
 이 두번째의 경우에는 첫번째 단어는 소문자로, 그 후에 오는 단어들의 첫번째 글자들은 대문자로 쓰입니다 (ex. camelCaseVariable). 
 """
+
+def make_lower(s):
+        """make first char into lowercase
+
+        Args:
+            s (str)
+
+        Returns:
+            res (str): input string where first char is lowercase
+        """
+        temp  = list(s)
+        temp[0] = temp[0].lower()      
+
+        res = ''.join(temp)
+        return res 
+
+def make_upper(s):
+        """make first char into uppercase
+
+        Args:
+            s (str)
+
+        Returns:
+            res (str): input string where first char is uppercase
+        """
+        temp  = list(s.lower())
+        temp[0] = temp[0].upper()      
+
+        res = ''.join(temp)
+        return res 
+def extract_str(s):
+    """extract only string
+
+        Args:
+            s (str)
+
+        Returns:
+            res (list): list of string
+        
+        Examples:
+            >>> s = "__ab_c_dd"
+            "['ab', 'c', 'dd']
+        """
+    temp = s.split('_')
+    res = []
+
+    for e in temp:
+        if e != '':
+            res.append(e)
+    return res
 
 
 def to_camel_case(underscore_str):
@@ -64,5 +135,16 @@ def to_camel_case(underscore_str):
             >>> tp2.to_camel_case(underscore_str3)
             "alreadyCamel"
     """
-    camelcase_str = None
+     
+    temp_str = extract_str(underscore_str)
+    if len(temp_str) == 1:
+        return make_lower(temp_str[0])
+
+    if temp_str:
+        temp_str[0] = make_lower(temp_str[0].lower())
+    for i in range(1, len(temp_str)):
+        temp_str[i] = make_upper(temp_str[i])
+    camelcase_str = ''.join(temp_str)
+
     return camelcase_str
+
